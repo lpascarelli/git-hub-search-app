@@ -1,26 +1,58 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react"
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import Header from "./components/Header/Header"
+import SearchUser from "./components/SearchUser/SearchUser"
+import UserList from "./components/UserList/UserList"
+import Loading from "./components/Loading/Loading"
+
+import "./App.css"
+
+const App = () => {
+    const [username, setUsername] = useState("")
+    const [githubUsers, setGithubUsers] = useState("")
+    const [error, setError] = useState("")
+    const [isLoading, setIsLoading] = useState(false)
+
+    const fetchUser = () => {
+        const url = `https://api.github.com/search/users?q=${username}`
+        setIsLoading(true)
+
+        fetch(url)
+            .then(response => {
+                response
+                    .json()
+                    .then(data => {
+                        setGithubUsers(data)
+                        setIsLoading(false)
+                    })
+                    .catch(error => {
+                        setError(error)
+                    })
+            })
+            .catch(error => {
+                setError(error)
+            })
+    }
+
+    let users = null
+
+    if (isLoading) {
+        users = <Loading />
+    } else if (githubUsers !== "") {
+        users = <UserList githubUsers={githubUsers} error={error} />
+    }
+
+    return (
+        <div>
+            <Header />
+            <SearchUser
+                setUsername={setUsername}
+                username={username}
+                fetchUser={fetchUser}
+            />
+            {users}
+        </div>
+    )
 }
 
-export default App;
+export default App

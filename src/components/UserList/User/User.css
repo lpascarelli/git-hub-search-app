@@ -1,0 +1,21 @@
+.user-container {
+    border: 1px solid black;
+    border-left: 5px solid lightblue;
+    margin-bottom: 10px;
+}
+
+.avatar-url {
+    width: 100px;
+    height: 100px;
+}
+
+.user-data {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 5px;
+}
+
+.user-information {
+    flex-direction: column;
+}
