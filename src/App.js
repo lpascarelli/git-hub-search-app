@@ -27,10 +27,12 @@ const App = () => {
                     })
                     .catch(error => {
                         setError(error)
+                        setIsLoading(false)
                     })
             })
             .catch(error => {
                 setError(error)
+                setIsLoading(false)
             })
     }
 
